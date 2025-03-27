@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "linear": {
+      "command": "node",
+      "args": [
+        "dist/minimal-server.js"
+      ]
+    }
+  }
+}
