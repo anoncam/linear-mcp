@@ -3,8 +3,11 @@
     "linear": {
       "command": "node",
       "args": [
-        "dist/minimal-server.js"
-      ]
+        "dist/index.js"
+      ],
+      "env": {
+        "LINEAR_API_KEY": "lin_your_api_key"
+      }
     }
   }
 }
