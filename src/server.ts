@@ -12,16 +12,21 @@ import { registerDocumentResources } from "./resources/documents.js";
 import { registerIntegrationResources } from "./resources/integrations.js";
 import { registerOrganizationResources } from "./resources/organization.js";
 import { registerInitiativeResources } from "./resources/initiatives.js";
+import { registerCycleResources } from "./resources/cycles.js";
+import { registerCommentResources } from "./resources/comments.js";
 
 // Import tool registrations
 import { registerIssueTools } from "./tools/issues.js";
 import { registerProjectTools } from "./tools/projects.js";
 import { registerSearchTools } from "./tools/search.js";
 import { registerInitiativeTools } from "./tools/initiatives.js";
+import { registerCycleTools } from "./tools/cycles.js";
+import { registerCommentTools } from "./tools/comments.js";
 
 // Import prompt registrations
 import { registerIssuePrompts } from "./prompts/issues.js";
 import { registerProjectPrompts } from "./prompts/projects.js";
+import { registerCyclePrompts } from "./prompts/cycles.js";
 
 /**
  * Creates and configures an MCP server for Linear integration.
@@ -56,14 +61,19 @@ Resources:
 - Integrations: View available and active integrations
 - Organization: View details about the organization
 - Initiatives: View initiatives and related projects
+- Cycles: View sprints/cycles and their issues
+- Comments: View comments on issues and threads
 
 Tools:
 - Create, update, and search issues
 - Create and update projects
 - Add issues to projects
-- Comment on issues
 - Create and manage initiatives
 - Link projects to initiatives
+- Create and manage cycles/sprints
+- Add issues to cycles
+- Create, update, and delete comments
+- Add reactions to comments
 - Comprehensive search functionality
 
 Use the resources to browse Linear data and tools to make changes.
@@ -81,16 +91,21 @@ Use the resources to browse Linear data and tools to make changes.
   registerIntegrationResources(server, linearClient);
   registerOrganizationResources(server, linearClient);
   registerInitiativeResources(server, linearClient);
+  registerCycleResources(server, linearClient);
+  registerCommentResources(server, linearClient);
 
   // Register tools
   registerIssueTools(server, linearClient);
   registerProjectTools(server, linearClient);
   registerSearchTools(server, linearClient);
   registerInitiativeTools(server, linearClient);
+  registerCycleTools(server, linearClient);
+  registerCommentTools(server, linearClient);
 
   // Register prompts
   registerIssuePrompts(server, linearClient);
   registerProjectPrompts(server, linearClient);
+  registerCyclePrompts(server, linearClient);
 
   return server;
 }
