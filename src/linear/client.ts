@@ -298,6 +298,22 @@ export class LinearClient {
     return this.client.createComment(data);
   }
 
+  /**
+   * Update a comment
+   */
+  async updateComment(id: string, data: {
+    body: string;
+  }) {
+    return this.client.updateComment(id, data);
+  }
+
+  /**
+   * Delete a comment
+   */
+  async deleteComment(id: string) {
+    return this.client.deleteComment(id);
+  }
+
   // ================= Cycles =================
 
   /**
@@ -323,5 +339,64 @@ export class LinearClient {
         team: { id: { eq: teamId } },
       },
     });
+  }
+
+  /**
+   * Create a cycle
+   */
+  async createCycle(data: {
+    teamId: string;
+    name: string;
+    startsAt: Date;
+    endsAt: Date;
+    description?: string;
+  }) {
+    return this.client.createCycle(data);
+  }
+
+  /**
+   * Update a cycle
+   */
+  async updateCycle(id: string, data: {
+    name?: string;
+    startsAt?: Date;
+    endsAt?: Date;
+    description?: string;
+  }) {
+    return this.client.updateCycle(id, data);
+  }
+
+  /**
+   * List active cycles across all teams
+   */
+  async listActiveCycles(options: {
+    first?: number;
+    after?: string;
+  } = {}) {
+    const { first = 50, after } = options;
+    const now = new Date().toISOString();
+    
+    return this.client.cycles({
+      first,
+      after,
+      filter: {
+        // @ts-ignore - The Linear SDK types may not be up to date
+        startsAt: { lte: now },
+        // @ts-ignore - The Linear SDK types may not be up to date
+        endsAt: { gte: now }
+      },
+    });
+  }
+
+  // ================= Reactions =================
+
+  /**
+   * Create a reaction
+   */
+  async createReaction(data: {
+    commentId: string;
+    emoji: string;
+  }) {
+    return this.client.createReaction(data);
   }
 }
