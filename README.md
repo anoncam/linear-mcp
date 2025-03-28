@@ -90,9 +90,11 @@ To use this server with Claude Desktop:
        "linear": {
          "command": "node",
          "args": [
-           "/path/to/linear-mcp/dist/index.js",
-           "stdio"
-         ]
+           "/path/to/linear-mcp/dist/index.js"
+         ],
+         "env": {
+           "LINEAR_API_KEY": "your_linear_api_key_here"
+         }
        }
      }
    }
