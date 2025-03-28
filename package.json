@@ -1,5 +1,6 @@
 {
-  "name": "@modelcontextprotocol/linear-mcp",
+  "name": "linear-mcp",
+  "author": "Cameron Banowsky",
   "version": "0.1.0",
   "description": "MCP server for Linear API integration",
   "type": "module",
