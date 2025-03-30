@@ -22,6 +22,7 @@ import { registerSearchTools } from "./tools/search.js";
 import { registerInitiativeTools } from "./tools/initiatives.js";
 import { registerCycleTools } from "./tools/cycles.js";
 import { registerCommentTools } from "./tools/comments.js";
+import { registerAssignmentTools } from "./tools/assignments.js";
 
 // Import prompt registrations
 import { registerIssuePrompts } from "./prompts/issues.js";
@@ -30,7 +31,7 @@ import { registerCyclePrompts } from "./prompts/cycles.js";
 
 /**
  * Creates and configures an MCP server for Linear integration.
- * 
+ *
  * @param linearApiKey - The Linear API key, should be loaded from .env file by the calling code
  * @returns A configured MCP server instance
  */
@@ -74,6 +75,8 @@ Tools:
 - Add issues to cycles
 - Create, update, and delete comments
 - Add reactions to comments
+- Assign and unassign issues to users
+- List issues assigned to specific users
 - Comprehensive search functionality
 
 Use the resources to browse Linear data and tools to make changes.
@@ -101,6 +104,7 @@ Use the resources to browse Linear data and tools to make changes.
   registerInitiativeTools(server, linearClient);
   registerCycleTools(server, linearClient);
   registerCommentTools(server, linearClient);
+  registerAssignmentTools(server, linearClient);
 
   // Register prompts
   registerIssuePrompts(server, linearClient);
