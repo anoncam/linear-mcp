@@ -29,3 +29,16 @@ Thumbs.db
 
 # Test coverage
 coverage/
+
+# Local configuration files
+.clinerules
+**/.clinerules
+
+# Memory log directory - all syntaxes to ensure cross-platform compatibility
+memlog/
+/memlog/
+/memlog/**
+memlog/**
+**/memlog/
+**/memlog/**
+mcp-server-analysis.md

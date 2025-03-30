@@ -19,7 +19,7 @@ export function registerIssueResources(server: McpServer, linearClient: LinearCl
     async (uri: URL, variables: Variables): Promise<ReadResourceResult> => {
       const id = variables.id as string;
       const issue = await linearClient.getIssue(id);
-      
+
       return {
         contents: [{
           uri: uri.href,
@@ -32,11 +32,11 @@ export function registerIssueResources(server: McpServer, linearClient: LinearCl
   // Resource for listing all issues (optionally filtered)
   server.resource(
     "issues",
-    new ResourceTemplate("linear://issues", { 
+    new ResourceTemplate("linear://issues", {
       list: async (_extra: RequestHandlerExtra) => {
         const result = await linearClient.listIssues({ first: 100 });
         const issues = result.nodes;
-        
+
         return {
           resources: issues.map(issue => ({
             uri: `linear://issues/${issue.id}`,
@@ -44,18 +44,18 @@ export function registerIssueResources(server: McpServer, linearClient: LinearCl
             description: issue.description?.substring(0, 100) || undefined,
           }))
         };
-      } 
+      }
     }),
     {
       description: "List of Linear issues",
     },
     async (uri: URL): Promise<ReadResourceResult> => {
       const issues = await linearClient.listIssues({ first: 100 });
-      
+
       return {
         contents: [{
           uri: uri.href,
-          text: await Promise.all(issues.nodes.map(async issue => 
+          text: await Promise.all(issues.nodes.map(async issue =>
             `- ${issue.identifier}: ${issue.title} (${(await issue.state)?.name || 'Unknown state'})`
           )).then(lines => lines.join('\n')),
         }]
@@ -72,15 +72,15 @@ export function registerIssueResources(server: McpServer, linearClient: LinearCl
     },
     async (uri: URL, variables: Variables): Promise<ReadResourceResult> => {
       const teamId = variables.teamId as string;
-      const issues = await linearClient.listIssues({ 
+      const issues = await linearClient.listIssues({
         teamIds: [teamId],
-        first: 100 
+        first: 100
       });
-      
+
       return {
         contents: [{
           uri: uri.href,
-          text: await Promise.all(issues.nodes.map(async issue => 
+          text: await Promise.all(issues.nodes.map(async issue =>
             `- ${issue.identifier}: ${issue.title} (${(await issue.state)?.name || 'Unknown state'})`
           )).then(lines => lines.join('\n')),
         }]
@@ -97,15 +97,15 @@ export function registerIssueResources(server: McpServer, linearClient: LinearCl
     },
     async (uri: URL, variables: Variables): Promise<ReadResourceResult> => {
       const stateId = variables.stateId as string;
-      const issues = await linearClient.listIssues({ 
+      const issues = await linearClient.listIssues({
         states: [stateId],
-        first: 100 
+        first: 100
       });
-      
+
       return {
         contents: [{
           uri: uri.href,
-          text: await Promise.all(issues.nodes.map(async issue => 
+          text: await Promise.all(issues.nodes.map(async issue =>
             `- ${issue.identifier}: ${issue.title} (${(await issue.state)?.name || 'Unknown state'})`
           )).then(lines => lines.join('\n')),
         }]
@@ -122,23 +122,16 @@ export function registerIssueResources(server: McpServer, linearClient: LinearCl
     },
     async (uri: URL, variables: Variables): Promise<ReadResourceResult> => {
       const userId = variables.userId as string;
-      
-      // Use the raw client to query issues by assignee
-      const rawClient = linearClient.getRawClient();
-      const result = await rawClient.issues({
-        filter: {
-          assignee: { id: { eq: userId } }
-        },
-        first: 100
-      });
-      
+
+      // Use the dedicated method for fetching user assignments
+      const result = await linearClient.getIssuesAssignedToUser(userId, { first: 100 });
       const issues = result.nodes;
-      
+
       return {
         contents: [{
           uri: uri.href,
-          text: await Promise.all(issues.map(async issue => 
-            `- ${issue.identifier}: ${issue.title} (${(await issue.state)?.name || 'Unknown state'})`
+          text: await Promise.all(issues.map(async (issue: any) =>
+            `- ${issue.identifier}: ${issue.title} (${(await issue.state)?.name || 'Unknown state'})${(await issue.assignee) ? ` - Assigned to: ${(await issue.assignee)?.name || 'Unknown'}` : ''}`
           )).then(lines => lines.join('\n')),
         }]
       };

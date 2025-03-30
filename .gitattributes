@@ -1,0 +1,11 @@
+# Set default behavior to automatically normalize line endings.
+* text=auto
+
+# Explicitly ignore these directories in Git
+.clinerules export-ignore
+memlog/ export-ignore
+memlog/** export-ignore
+/memlog/ export-ignore
+**/memlog/ export-ignore
+\memlog\ export-ignore
+\\memlog\\ export-ignore
